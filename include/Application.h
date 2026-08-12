@@ -1,7 +1,8 @@
 #pragma once
 
-#include "SpriteRenderer.h"
 #include "GameObject.h"
+#include "SpriteRenderer.h"
+#include "WindowManager.h"
 
 #include <glad/glad.h>
 #include <glfw3.h>
@@ -10,8 +11,9 @@ class Application
 {
 private:
     // Window
-    GLFWwindow *m_window = nullptr;
-    const unsigned int m_width = 640 * 1.5, m_height = 480 * 1.5;
+    WindowManager m_windowManager;
+    Window *m_window = nullptr;
+    unsigned int m_width = 640 * 1.5, m_height = 480 * 1.5;
     unsigned int m_windowWidth, m_windowHeight;
 
     // Renderer
@@ -24,7 +26,6 @@ private:
     float m_ballRadius = 12.5f;
 
     // Input
-    std::unordered_map<int, bool> m_keys;
     std::unordered_map<int, float> m_keyTimeout;
 
     void Run();
@@ -34,6 +35,7 @@ private:
     void ProcessInput(float &dt);
     void PerformCollisionDetection();
     void InitLevel();
+    GLFWwindow *CreateWindow();
 
     void ProcessKeyTimeout(float &dt);
     static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);

@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
+#include "WindowManager.h"
 
 Application::Application() { }
 
@@ -14,56 +15,10 @@ void Application::Start()
     Application::Init();
 }
 
-void Application::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
-{
-    auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
-
-    if (action == GLFW_PRESS) {
-        app->m_keys[key] = true;
-    }
-
-    else if (action == GLFW_RELEASE) {
-        app->m_keys[key] = false;
-    }
-}
-
-void Application::ErrorCallback(int error, const char *description)
-{
-    std::cerr << "Error: " << description << " Code : " << error << std::endl;
-};
-
 void Application::Init()
 {
-    if (!glfwInit()) {
-        std::cerr << "Failed to initialize glfw. Exiting the application";
-        exit(EXIT_FAILURE);
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
-    m_window = glfwCreateWindow(m_width, m_height, "Breakout", NULL, NULL);
-
-    if (!m_window) {
-        std::cerr << "Failed to created glfw window. Exiting the application";
-        exit(EXIT_FAILURE);
-    }
-
-    glfwMakeContextCurrent(m_window);
-    glfwSwapInterval(1);
-
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        std::cerr << "Failed to initialize glad. Exiting the application";
-        exit(EXIT_FAILURE);
-    }
-
-    glfwSetKeyCallback(m_window, KeyCallback);
-    glfwSetErrorCallback(ErrorCallback);
-    glfwSwapInterval(1);
-
-    glfwSetWindowUserPointer(m_window, this);
+    m_windowManager = WindowManager();
+    m_window = m_windowManager.CreateWindow("Evolution");
 
     ResourceManager::Instance.AddShader("res/shaders/vert.glsl", "res/shaders/frag.glsl", DEFAULT_SHADER, ShaderType::Default);
     ResourceManager::Instance.AddShader("res/shaders/texVert.glsl", "res/shaders/texFrag.glsl", TEXTURE_SHADER, ShaderType::Texture);
@@ -108,8 +63,8 @@ void Application::Draw()
 
 void Application::ProcessInput(float &dt)
 {
-    if (m_keys[GLFW_KEY_ESCAPE]) {
-        glfwSetWindowShouldClose(m_window, GLFW_TRUE);
+    if (m_windowManager.m_keys[GLFW_KEY_ESCAPE]) {
+        glfwSetWindowShouldClose(m_window->window, GLFW_TRUE);
     }
 }
 
@@ -130,8 +85,8 @@ void Application::Run()
     float lastFrame = glfwGetTime();
     int fps = 0;
     float timeElapsed = 0;
-    while (!glfwWindowShouldClose(m_window)) {
-        glfwGetFramebufferSize(m_window, (int *) &m_windowWidth, (int *) &m_windowHeight);
+    while (!glfwWindowShouldClose(m_window->window)) {
+        glfwGetFramebufferSize(m_window->window, (int *) &m_windowWidth, (int *) &m_windowHeight);
         glViewport(0, 0, m_windowWidth, m_windowHeight);
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -155,7 +110,7 @@ void Application::Run()
 
         Draw();
 
-        glfwSwapBuffers(m_window);
+        glfwSwapBuffers(m_window->window);
         glfwPollEvents();
     }
 }
@@ -163,6 +118,6 @@ void Application::Run()
 Application::~Application()
 {
     std::cout << "Closing the Application" << std::endl;
-    glfwDestroyWindow(m_window);
+    glfwDestroyWindow(m_window->window);
     glfwTerminate();
 }
