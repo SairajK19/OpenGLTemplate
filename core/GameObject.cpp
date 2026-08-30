@@ -18,12 +18,17 @@ void GameObject::Draw(SpriteRenderer &renderer)
     Texture tex = ResourceManager::Instance.GetTexture(m_textureName);
 
     // TODO: Think of creating a sprite sheet manager. 4th argument is the sprite sheet sprite coordinate
-    renderer.DrawSprite(tex, m_pos, m_size, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_color, m_rotation);
+    // renderer.DrawSprite(tex, m_pos, m_size, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_color, m_rotation);
 }
 
 void GameObject::SetDestroyed(bool destroyed)
 {
     m_destroyed = destroyed;
+}
+
+void GameObject::SetSize(glm::vec2 size)
+{
+    m_size = size;
 }
 
 void GameObject::SetPosition(glm::vec2 pos)

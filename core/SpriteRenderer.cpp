@@ -42,9 +42,10 @@ void SpriteRenderer::DrawQuad(glm::vec2 pos, glm::vec2 dimensions)
  * This is problematic incase you have a scene in which a texture is drawn behind another texture in some area
  * as well as drawn infront in some other area.
 */
-void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 pos, glm::vec2 dimensions, glm::vec4 texCoord, glm::vec4 color, float angle)
+void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 pos, Sprite sprite, float scale, glm::vec4 color, float angle)
 {
     Shader shader = ResourceManager::Instance.GetShader(TEXTURE_SHADER);
+    glm::vec2 dimensions = glm::vec2(sprite.w, sprite.h) * scale;
 
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(pos.x, pos.y, 0.0f));
@@ -59,7 +60,7 @@ void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 pos, glm::vec2 dimen
     instance.modelMatrix = model;
     instance.color = color;
 
-    instance.texUv = texCoord;
+    instance.texUv = glm::vec4(sprite.coord.topLeft, sprite.coord.bottomRight);
     textureMesh.PushInstance(texture.GetTexture(), instance);
 }
 

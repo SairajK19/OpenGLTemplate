@@ -30,6 +30,27 @@ void ResourceManager::AddShader(std::string vsPath,
     m_shaders[name] = shader;
 }
 
+void ResourceManager::AddSpriteSheet(std::string path, std::string name)
+{
+    std::filesystem::path absolutePath = root / path;
+
+    SpriteSheet ss = SpriteSheet(absolutePath, 16.f);
+
+    m_spriteSheets[name] = ss;
+}
+
+SpriteSheet &ResourceManager::GetSpriteSheet(std::string name)
+{
+    auto it = m_spriteSheets.find(name);
+
+    if (it == m_spriteSheets.end()) {
+        // TODO: Think of some other way to handle this.
+        exit(EXIT_FAILURE);
+    }
+
+    return it->second;
+}
+
 Texture ResourceManager::GetTexture(std::string name)
 {
     auto it = m_textures.find(name);

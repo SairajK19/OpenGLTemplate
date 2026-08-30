@@ -18,6 +18,7 @@ public:
 
     void SetPosition(glm::vec2 pos);
     void SetDestroyed(bool destroyed);
+    void SetSize(glm::vec2 size);
 
     void Draw(SpriteRenderer &renderer);
 

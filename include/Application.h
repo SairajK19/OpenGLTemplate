@@ -1,9 +1,11 @@
 #pragma once
 
+#include "Camera2D.h"
 #include "GameObject.h"
 #include "SpriteRenderer.h"
 #include "WindowManager.h"
 
+#include "SpriteSheet.h"
 #include <glad/glad.h>
 #include <glfw3.h>
 
@@ -25,9 +27,11 @@ private:
     const glm::vec2 m_ballInitialVel = glm::vec2(100.0f, -350.0f);
     float m_ballRadius = 12.5f;
 
+    // Camera
+    Camera2D m_camera;
+
     // Input
     std::unordered_map<int, float> m_keyTimeout;
-
     void Run();
     void Init();
     void Update(float &dt);
@@ -40,6 +44,7 @@ private:
     void ProcessKeyTimeout(float &dt);
     static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
     static void ErrorCallback(int error, const char *description);
+    static void WindowResizeCallback(GLFWwindow *window, int width, int height);
 
 public:
     Application();

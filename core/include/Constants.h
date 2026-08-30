@@ -16,3 +16,4 @@ const std::string TEXTURE_SHADER = "TextureShader";
 
 // Textures
 const std::string SOLAIRE_OF_ASTORA = "SolaireOfAstora";
+const std::string DUNGEON_ATLAS = "DungeonAtlas";

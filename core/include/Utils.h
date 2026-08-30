@@ -33,6 +33,19 @@ struct TextureVertex
     TexCoord uv;
 };
 
+struct SpriteCoord
+{
+    glm::vec2 topLeft;
+    glm::vec2 bottomRight;
+};
+
+struct Sprite
+{
+    SpriteCoord coord;
+    float w;
+    float h;
+};
+
 enum Direction { UP, DOWN, LEFT, RIGHT };
 
 typedef unsigned int TextureID;

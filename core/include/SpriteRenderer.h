@@ -3,6 +3,7 @@
 #include "QuadMesh.h"
 #include "Texture.hpp"
 #include "TextureMesh.h"
+#include "Utils.h"
 
 class SpriteRenderer
 {
@@ -15,7 +16,7 @@ public:
     SpriteRenderer();
     void Init();
     void DrawQuad(glm::vec2 pos, glm::vec2 dimensions);
-    void DrawSprite(Texture &texture, glm::vec2 pos, glm::vec2 dimensions, glm::vec4 texCoord, glm::vec4 color, float angle);
+    void DrawSprite(Texture &texture, glm::vec2 pos, Sprite sprite, float scale, glm::vec4 color, float angle);
     void Begin();
     void End();
     unsigned int GetInstanceCount();
